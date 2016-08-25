@@ -100,7 +100,7 @@ describe('lighty-plugin-legacy', () => {
     });
 
     // eslint-disable-next-line
-    it("doesn't create aliases for existing properties", done => {
+    it("doesn't override existing properties", done => {
       fixture(`
         <div class="role-no-bind">
           <div data-role="exists" />
