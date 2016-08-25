@@ -1,10 +1,16 @@
+/* eslint no-param-reassign: 0 */
+
 import $ from 'jquery';
 import { plugin } from 'lighty';
 
 
 function pluginInitializer() {
   return function transform(component, node) {
-    component.block = $(node); // eslint-disable-line
+    component.block = $(node);
+
+    component.$ = function find(selector) {
+      return $(node).find(selector);
+    };
   };
 }
 
