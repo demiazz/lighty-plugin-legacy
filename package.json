@@ -3,14 +3,11 @@
   "description": "Plugin for Evil Blocks compatibility",
   "private": true,
   "version": "0.0.1",
-  "main": "lib/index.js",
-  "module": "es/index.js",
-  "jsnext:main": "es/index.js",
+  "main": "dist/lighty-plugin-legacy.js",
+  "module": "dist/lighty-plugin-legacy.es.js",
+  "jsnext:main": "dist/lighty-plugin-legacy.es.js",
   "files": [
     "dist",
-    "lib",
-    "es",
-    "src"
   ],
   "scripts": {
     "lint": "eslint src spec",
