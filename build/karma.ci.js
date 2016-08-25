@@ -2,7 +2,7 @@ const baseConfig = require('./karma.base');
 
 
 function getBuild() {
-  let id = `TRAVIS #${process.env.TRAVIS_BUILD_NUMBER}`;
+  let id = `LIGHTY-PLUGIN-LEGACY - TRAVIS #${process.env.TRAVIS_BUILD_NUMBER}`;
 
   id += ` (Branch: ${process.env.TRAVIS_BRANCH}`;
 
@@ -127,7 +127,7 @@ module.exports = function karma(config) {
 
   Object.assign(baseConfig, {
     sauceLabs: {
-      testName: 'lighty',
+      testName: 'lighty-plugin-legacy',
       build: getBuild(),
       tunnelIdentifier: getTunnel(),
       recordVideo: false,
