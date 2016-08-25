@@ -1,23 +1,38 @@
 {
-  "name": "lighty-legacy",
-  "description": "Plugin for Evil Blocks compatibility",
-  "private": true,
-  "version": "0.0.1",
+  "name": "lighty-plugin-legacy",
+  "version": "0.1.0",
+  "description": "Plugin for compatibility with Evil Blocks",
+  "license": "MIT",
+  "homepage": "https://github.com/demiazz/lighty-plugin-legacy",
+  "bugs": {
+    "url": "https://github.com/demiazz/lighty-plugin-legacy/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/demiazz/lighty-plugin-legacy"
+  },
+  "author": {
+    "name": "Alexey Plutalov",
+    "email": "demiazz.py@gmail.com"
+  },
   "main": "dist/lighty-plugin-legacy.js",
   "module": "dist/lighty-plugin-legacy.es.js",
   "jsnext:main": "dist/lighty-plugin-legacy.es.js",
   "files": [
     "dist",
+    "README.md"
   ],
   "scripts": {
-    "test": "cross-env NODE_ENV=test $(npm bin)/karma start build/karma.local.js",
     "lint": "$(npm bin)/eslint src spec",
+    "test": "cross-env NODE_ENV=test $(npm bin)/karma start build/karma.local.js --single-run",
+    "test:watch": "cross-env NODE_ENV=test $(npm bin)/karma start build/karma.local.js",
     "test:ci": "cross-env NODE_ENV=test $(npm bin)/karma start build/karma.ci.js",
     "build:commonjs": "$(npm bin)/cross-env TARGET=commonjs $(npm bin)/rollup --config build/rollup.config.js",
     "build:es": "$(npm bin)/cross-env TARGET=es $(npm bin)/rollup --config build/rollup.config.js",
     "build:umd": "$(npm bin)/cross-env TARGET=umd $(npm bin)/rollup --config build/rollup.config.js",
     "build:umd:min": "$(npm bin)/cross-env TARGET=umd NODE_ENV=production $(npm bin)/rollup --config build/rollup.config.js",
-    "build": "npm run build:commonjs && npm run build:es && npm run build:umd && npm run build:umd:min"
+    "build": "npm run build:commonjs && npm run build:es && npm run build:umd && npm run build:umd:min",
+    "prepublish": "npm run lint && npm run test && npm run build"
   },
   "dependencies": {
     "lighty": "^0.1.0",
