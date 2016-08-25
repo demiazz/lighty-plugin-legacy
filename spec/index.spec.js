@@ -120,4 +120,69 @@ describe('lighty-plugin-legacy', () => {
       application.vitalize();
     });
   });
+
+  describe('block events', () => {
+    it('binds callback to block event', () => {
+      fixture(`
+        <div class="block-events"></div>
+      `);
+
+      const params = [];
+
+      application.component('.block-events', {
+        'on my-event': function handleEvent(e, param) {
+          params.push(param);
+        },
+      });
+
+      application.vitalize();
+
+      $('.block-events').trigger('my-event', 'my-param');
+
+      expect(params).toEqual(['my-param']);
+    });
+
+    it('binds callback to multiple block events', () => {
+      fixture(`
+        <div class="multiple-block-events"></div>
+      `);
+
+      const params = [];
+
+      application.component('.multiple-block-events', {
+        'on first-event second-event': function handleEvent(e, param) {
+          params.push(param);
+        },
+      });
+
+      application.vitalize();
+
+      $('.multiple-block-events').trigger('first-event', 'first-param');
+      $('.multiple-block-events').trigger('second-event', 'second-param');
+
+      expect(params).toEqual(['first-param', 'second-param']);
+    });
+
+    it('checks source for block events', () => {
+      fixture(`
+        <div class="only-block-events">
+          <div data-role="inside"></div>
+        </div>
+      `);
+
+      const params = [];
+
+      application.component('.only-block-events', {
+        'on my-event': function handleEvent(e, param) {
+          params.push(param);
+        },
+      });
+
+      application.vitalize();
+
+      $('@inside').trigger('my-event', 'my-param');
+
+      expect(params).toEqual([]);
+    });
+  });
 });

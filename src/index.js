@@ -7,6 +7,7 @@ import './roles';
 
 import addFindAlias from './find-alias';
 import addRoleAlias from './role-alias';
+import addBlockEvents from './block-events';
 
 
 function pluginInitializer() {
@@ -15,6 +16,7 @@ function pluginInitializer() {
 
     addFindAlias(component);
     addRoleAlias(component);
+    addBlockEvents(component);
   };
 }
 
