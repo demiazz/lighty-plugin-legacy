@@ -24,6 +24,9 @@ if (process.env.TARGET === 'umd') {
     ? 'dist/lighty-plugin-legacy.min.js'
     : 'dist/lighty-plugin-legacy.js';
   config.format = 'umd';
+  config.globals = {
+    jquery: 'jQuery',
+  };
 
   if (process.env.NODE_ENV === 'production') {
     config.plugins.push(uglify());
