@@ -37,33 +37,46 @@ describe('lighty-plugin-legacy', () => {
     it('calls callback with component instance as context', done => {
       fixture('<div class="load-events-context"></div>');
 
-      const data = 'some-data';
+      const eventSpy = sinon.spy();
+
+      let component;
 
       application.component('.load-events-context', {
         init() {
-          this.data = data;
+          component = this;
         },
 
-        'load on window': function handleEvent() {
-          expect(this.data).toEqual(data);
+        'load on window': eventSpy,
+      }).vitalize();
 
-          done();
-        },
+      expect(eventSpy.callCount).toEqual(0);
+      expect(component).toBeTruthy();
+
+      setTimeout(() => {
+        expect(eventSpy.callCount).toEqual(1);
+        expect(eventSpy.calledOn(component)).toBe(true);
+
+        done();
       });
-
-      application.vitalize();
     });
 
-    it('calls callback with event object as first argument', () => {
+    it('calls callback with event object as first argument', done => {
       fixture('<div class="load-events-event"></div>');
 
-      application.component('.load-events-event', {
-        'load on window': function handleEvent(e) {
-          expect(e instanceof $.Event).toBe(true);
-        },
-      });
+      const eventSpy = sinon.spy();
 
-      application.vitalize();
+      application.component('.load-events-event', {
+        'load on window': eventSpy,
+      }).vitalize();
+
+      expect(eventSpy.callCount).toEqual(0);
+
+      setTimeout(() => {
+        expect(eventSpy.callCount).toEqual(1);
+        expect(eventSpy.getCall(0).args[0] instanceof $.Event).toBe(true);
+
+        done();
+      });
     });
   });
 });
