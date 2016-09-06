@@ -94,7 +94,7 @@ describe('lighty-plugin-legacy', () => {
       $('.block-events-context').trigger('click');
 
       expect(eventSpy.callCount).toEqual(1);
-      expect(eventSpy.thisValues[0]).toEqual(component);
+      expect(eventSpy.calledOn(component)).toBe(true);
     });
 
     it('calls callback with event object as first argument', () => {
@@ -111,7 +111,7 @@ describe('lighty-plugin-legacy', () => {
       $('.block-events-event').trigger('click');
 
       expect(eventSpy.callCount).toEqual(1);
-      expect(eventSpy.args[0][0] instanceof $.Event).toBe(true);
+      expect(eventSpy.getCall(0).args[0] instanceof $.Event).toBe(true);
     });
 
     it('calls callback with event data', () => {
@@ -132,12 +132,12 @@ describe('lighty-plugin-legacy', () => {
       $('.block-events-event-data').trigger('single', singleArg);
 
       expect(eventSpy.callCount).toEqual(1);
-      expect(eventSpy.args[0].slice(1)).toEqual([singleArg]);
+      expect(eventSpy.getCall(0).args.slice(1)).toEqual([singleArg]);
 
       $('.block-events-event-data').trigger('multiple', multipleArgs);
 
       expect(eventSpy.callCount).toEqual(2);
-      expect(eventSpy.args[1].slice(1)).toEqual(multipleArgs);
+      expect(eventSpy.getCall(1).args.slice(1)).toEqual(multipleArgs);
     });
   });
 });
