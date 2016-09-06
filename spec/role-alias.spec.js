@@ -60,7 +60,6 @@ describe('lighty-plugin-legacy', () => {
       application.vitalize();
     });
 
-    // eslint-disable-next-line
     it("doesn't override existing properties", done => {
       fixture(`
         <div class="role-no-bind">
