@@ -26,9 +26,7 @@ describe('lighty-plugin-legacy', () => {
       application.component('.element-events-1-to-1', {
         'click on .inside': eventSpy,
         'custom-event on .inside': eventSpy,
-      });
-
-      application.vitalize();
+      }).vitalize();
 
       expect(eventSpy.callCount).toEqual(0);
 
