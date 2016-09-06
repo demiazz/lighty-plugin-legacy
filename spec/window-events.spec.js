@@ -14,7 +14,7 @@ describe('lighty-plugin-legacy', () => {
   afterEach(clear);
 
   describe('window events', () => {
-    it('binds callback to window event', () => {
+    it('adds support for `<event> on window` pattern', () => {
       fixture('<div class="window-events-single"></div>');
 
       const eventSpy = sinon.spy();
@@ -35,7 +35,7 @@ describe('lighty-plugin-legacy', () => {
       expect(eventSpy.callCount).toEqual(2);
     });
 
-    it('binds callback to many window events', () => {
+    it('adds support for `<event>[ <event> ...] on window` pattern', () => {
       fixture('<div class="window-events-multiple"></div>');
 
       const eventSpy = sinon.spy();
@@ -55,7 +55,7 @@ describe('lighty-plugin-legacy', () => {
       expect(eventSpy.callCount).toEqual(2);
     });
 
-    it('calls callback with component instance as context', () => {
+    it('calls handler on a component instance', () => {
       fixture('<div class="window-events-context"></div>');
 
       const eventSpy = sinon.spy();
@@ -79,7 +79,7 @@ describe('lighty-plugin-legacy', () => {
       expect(eventSpy.calledOn(component)).toBe(true);
     });
 
-    it('calls callback with event object as first argument', () => {
+    it('passes an event to a handler', () => {
       fixture('<div class="window-events-event"></div>');
 
       const eventSpy = sinon.spy();
@@ -96,7 +96,7 @@ describe('lighty-plugin-legacy', () => {
       expect(eventSpy.getCall(0).args[0] instanceof $.Event).toBe(true);
     });
 
-    it('calls callback with event data', () => {
+    it('passes an event data to a handler', () => {
       fixture('<div class="block-events-event-data"></div>');
 
       const singleArg = { single: 'argument' };

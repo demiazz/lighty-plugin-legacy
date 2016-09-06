@@ -14,7 +14,7 @@ describe('lighty-plugin-legacy', () => {
   afterEach(clear);
 
   describe('block events', () => {
-    it('binds callback to block event', () => {
+    it('adds support for `on <event>` pattern`', () => {
       fixture('<div class="block-events"></div>');
 
       const eventSpy = sinon.spy();
@@ -35,7 +35,7 @@ describe('lighty-plugin-legacy', () => {
       expect(eventSpy.callCount).toEqual(2);
     });
 
-    it('binds callback to multiple block events', () => {
+    it('adds support for `on <event>[ <event> ...]` pattern`', () => {
       fixture('<div class="multiple-block-events"></div>');
 
       const eventSpy = sinon.spy();
@@ -55,7 +55,7 @@ describe('lighty-plugin-legacy', () => {
       expect(eventSpy.callCount).toEqual(2);
     });
 
-    it('checks source for block events', () => {
+    it("calls handler only when a block is event's target", () => {
       fixture(`
         <div class="only-block-events">
           <div data-role="inside"></div>
@@ -73,7 +73,7 @@ describe('lighty-plugin-legacy', () => {
       expect(eventSpy.callCount).toEqual(0);
     });
 
-    it('calls callback with component instance as context', () => {
+    it('calls handler on a component instance', () => {
       fixture('<div class="block-events-context"></div>');
 
       const eventSpy = sinon.spy();
@@ -97,7 +97,7 @@ describe('lighty-plugin-legacy', () => {
       expect(eventSpy.calledOn(component)).toBe(true);
     });
 
-    it('calls callback with event object as first argument', () => {
+    it('passes an event to a handler', () => {
       fixture('<div class="block-events-event"></div>');
 
       const eventSpy = sinon.spy();
@@ -114,7 +114,7 @@ describe('lighty-plugin-legacy', () => {
       expect(eventSpy.getCall(0).args[0] instanceof $.Event).toBe(true);
     });
 
-    it('calls callback with event data', () => {
+    it('passes an event data to a handler', () => {
       fixture('<div class="block-events-event-data"></div>');
 
       const singleArg = { single: 'argument' };

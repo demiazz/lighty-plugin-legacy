@@ -8,7 +8,7 @@ import '../src/roles';
 describe('jquery', () => {
   afterEach(clear);
 
-  it('adds roles alias', () => {
+  it('adds `@<role>` alias for `[data-role=<role>]` selector', () => {
     fixture(`
       <b data-role="roleTest" />
       <b data-role="multi one" />
@@ -19,7 +19,7 @@ describe('jquery', () => {
     expect($('@multi').length).toEqual(2);
   });
 
-  it('adds block alias', () => {
+  it('adds `@@<block>` alias for `[data-block=<block>]` selector', () => {
     fixture(`
       <b data-block="blockTest" />
       <b data-block="multi one" />

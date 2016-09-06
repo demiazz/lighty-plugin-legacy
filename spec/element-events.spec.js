@@ -14,7 +14,7 @@ describe('lighty-plugin-legacy', () => {
   afterEach(clear);
 
   describe('element events', () => {
-    it('binds single callback to single element inside block', () => {
+    it('adds support for `<event> on <selector>` pattern', () => {
       fixture(`
         <div class="element-events-1-to-1">
           <div class="inside"></div>
@@ -41,7 +41,7 @@ describe('lighty-plugin-legacy', () => {
       expect(eventSpy.callCount).toEqual(2);
     });
 
-    it('binds many events', () => {
+    it('adds support for `<event>[ <event> ...] on <selector>` pattern', () => {
       fixture(`
         <div class="element-events-m-to-1">
           <div class="inside"></div>
@@ -65,7 +65,7 @@ describe('lighty-plugin-legacy', () => {
       expect(eventSpy.callCount).toEqual(2);
     });
 
-    it('binds callback to many elements inside block', () => {
+    it('adds support for `<event> on <selector>[, <selector> ...]` pattern', () => {
       fixture(`
         <div class="element-events-1-to-m">
           <div class="first"></div>
@@ -90,7 +90,7 @@ describe('lighty-plugin-legacy', () => {
       expect(eventSpy.callCount).toEqual(2);
     });
 
-    it('binds many callbacks to many elements inside block', () => {
+    it('adds support for `<event>[ <event> ...] on <selector>[, <selector> ...]` pattern', () => {
       fixture(`
         <div class="element-events-m-to-m">
           <div class="first"></div>
@@ -123,7 +123,7 @@ describe('lighty-plugin-legacy', () => {
       expect(eventSpy.callCount).toEqual(4);
     });
 
-    it('calls callback with component instance as context', () => {
+    it('calls handler on a component instance', () => {
       fixture(`
         <div class="element-events-context">
           <div class="inside"></div>
@@ -151,7 +151,7 @@ describe('lighty-plugin-legacy', () => {
       expect(eventSpy.calledOn(component)).toBe(true);
     });
 
-    it('calls callback with event object as first argument', () => {
+    it('passes an event to a handler', () => {
       fixture(`
         <div class="element-events-event">
           <div class="inside"></div>
@@ -172,7 +172,7 @@ describe('lighty-plugin-legacy', () => {
       expect(eventSpy.getCall(0).args[0] instanceof $.Event).toBe(true);
     });
 
-    it('calls callback with event data', () => {
+    it('passes an event data to a handler', () => {
       fixture(`
         <div class="element-events-event-data">
           <div class="inside"></div>

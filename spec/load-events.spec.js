@@ -14,7 +14,7 @@ describe('lighty-plugin-legacy', () => {
   afterEach(clear);
 
   describe('load events', () => {
-    it('binds callback to load event on window', done => {
+    it('adds support for `load on window` pattern', done => {
       fixture('<div class="load-events"></div>');
 
       const eventSpy = sinon.spy();
@@ -34,7 +34,7 @@ describe('lighty-plugin-legacy', () => {
       }, 10);
     });
 
-    it('calls callback with component instance as context', done => {
+    it('calls handler on a component instance', done => {
       fixture('<div class="load-events-context"></div>');
 
       const eventSpy = sinon.spy();
@@ -60,7 +60,7 @@ describe('lighty-plugin-legacy', () => {
       });
     });
 
-    it('calls callback with event object as first argument', done => {
+    it('passes an event to a handler', done => {
       fixture('<div class="load-events-event"></div>');
 
       const eventSpy = sinon.spy();

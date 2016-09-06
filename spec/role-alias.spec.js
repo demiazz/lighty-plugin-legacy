@@ -13,7 +13,7 @@ describe('lighty-plugin-legacy', () => {
   afterEach(clear);
 
   describe('role aliases', () => {
-    it('creates properties for each element with `data-role`', done => {
+    it('adds `.<role>` property for each `[data-role=<role>]` element', done => {
       fixture(`
         <div data-role="single"></div>
         <div data-role="multi"></div>
