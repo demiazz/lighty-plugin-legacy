@@ -21,29 +21,24 @@ describe('lighty-plugin-legacy', () => {
         </div>
       `);
 
-      const domEvent = sinon.spy();
-      const customEvent = sinon.spy();
+      const eventSpy = sinon.spy();
 
       application.component('.element-events-1-to-1', {
-        'click on .inside': function domEventHandler() {
-          domEvent();
-        },
-
-        'custom-event on .inside': function customEventHandler() {
-          customEvent();
-        },
+        'click on .inside': eventSpy,
+        'custom-event on .inside': eventSpy,
       });
 
       application.vitalize();
 
-      expect(domEvent.callCount).toEqual(0);
-      expect(customEvent.callCount).toEqual(0);
+      expect(eventSpy.callCount).toEqual(0);
 
       $('.element-events-1-to-1 .inside').trigger('click');
+
+      expect(eventSpy.callCount).toEqual(1);
+
       $('.element-events-1-to-1 .inside').trigger('custom-event');
 
-      expect(domEvent.callCount).toEqual(1);
-      expect(customEvent.callCount).toEqual(1);
+      expect(eventSpy.callCount).toEqual(2);
     });
 
     it('binds many events', () => {
@@ -53,25 +48,21 @@ describe('lighty-plugin-legacy', () => {
         </div>
       `);
 
-      const event = sinon.spy();
+      const eventSpy = sinon.spy();
 
       application.component('.element-events-m-to-1', {
-        'click custom-event on .inside': function handleEvents() {
-          event();
-        },
-      });
+        'click custom-event on .inside': eventSpy,
+      }).vitalize();
 
-      application.vitalize();
-
-      expect(event.callCount).toEqual(0);
+      expect(eventSpy.callCount).toEqual(0);
 
       $('.element-events-m-to-1 .inside').trigger('click');
 
-      expect(event.callCount).toEqual(1);
+      expect(eventSpy.callCount).toEqual(1);
 
       $('.element-events-m-to-1 .inside').trigger('custom-event');
 
-      expect(event.callCount).toEqual(2);
+      expect(eventSpy.callCount).toEqual(2);
     });
 
     it('binds callback to many elements inside block', () => {
@@ -82,25 +73,21 @@ describe('lighty-plugin-legacy', () => {
         </div>
       `);
 
-      const event = sinon.spy();
+      const eventSpy = sinon.spy();
 
       application.component('.element-events-1-to-m', {
-        'click on .first, .second': function handleEvents() {
-          event();
-        },
-      });
+        'click on .first, .second': eventSpy,
+      }).vitalize();
 
-      application.vitalize();
-
-      expect(event.callCount).toEqual(0);
+      expect(eventSpy.callCount).toEqual(0);
 
       $('.element-events-1-to-m .first').trigger('click');
 
-      expect(event.callCount).toEqual(1);
+      expect(eventSpy.callCount).toEqual(1);
 
       $('.element-events-1-to-m .second').trigger('click');
 
-      expect(event.callCount).toEqual(2);
+      expect(eventSpy.callCount).toEqual(2);
     });
 
     it('binds many callbacks to many elements inside block', () => {
@@ -111,59 +98,57 @@ describe('lighty-plugin-legacy', () => {
         </div>
       `);
 
-      const event = sinon.spy();
+      const eventSpy = sinon.spy();
 
       application.component('.element-events-m-to-m', {
-        'click custom-event on .first, .second': function handleEvents() {
-          event();
-        },
-      });
+        'click custom-event on .first, .second': eventSpy,
+      }).vitalize();
 
-      application.vitalize();
-
-      expect(event.callCount).toEqual(0);
+      expect(eventSpy.callCount).toEqual(0);
 
       $('.element-events-m-to-m .first').trigger('click');
 
-      expect(event.callCount).toEqual(1);
+      expect(eventSpy.callCount).toEqual(1);
 
       $('.element-events-m-to-m .first').trigger('custom-event');
 
-      expect(event.callCount).toEqual(2);
+      expect(eventSpy.callCount).toEqual(2);
 
       $('.element-events-m-to-m .second').trigger('click');
 
-      expect(event.callCount).toEqual(3);
+      expect(eventSpy.callCount).toEqual(3);
 
       $('.element-events-m-to-m .second').trigger('custom-event');
 
-      expect(event.callCount).toEqual(4);
+      expect(eventSpy.callCount).toEqual(4);
     });
 
-    it('calls callback with component instance as context', done => {
+    it('calls callback with component instance as context', () => {
       fixture(`
         <div class="element-events-context">
           <div class="inside"></div>
         </div>
       `);
 
-      const data = 'some-data';
+      const eventSpy = sinon.spy();
+
+      let component;
 
       application.component('.element-events-context', {
         init() {
-          this.data = data;
+          component = this;
         },
 
-        'click on .inside': function handleEvent() {
-          expect(this.data).toEqual(data);
+        'click on .inside': eventSpy,
+      }).vitalize();
 
-          done();
-        },
-      });
-
-      application.vitalize();
+      expect(eventSpy.callCount).toEqual(0);
+      expect(component).toBeTruthy();
 
       $('.element-events-context .inside').trigger('click');
+
+      expect(eventSpy.callCount).toEqual(1);
+      expect(eventSpy.calledOn(component)).toBe(true);
     });
 
     it('calls callback with event object as first argument', () => {
@@ -173,53 +158,48 @@ describe('lighty-plugin-legacy', () => {
         </div>
       `);
 
-      application.component('.element-events-event', {
-        'click on .inside': function handleEvent(e) {
-          expect(e instanceof $.Event).toBe(true);
-        },
-      });
+      const eventSpy = sinon.spy();
 
-      application.vitalize();
+      application.component('.element-events-event', {
+        'click on .inside': eventSpy,
+      }).vitalize();
+
+      expect(eventSpy.callCount).toEqual(0);
 
       $('.element-events-event .inside').trigger('click');
+
+      expect(eventSpy.callCount).toEqual(1);
+      expect(eventSpy.getCall(0).args[0] instanceof $.Event).toBe(true);
     });
 
     it('calls callback with event data', () => {
       fixture(`
         <div class="element-events-event-data">
-          <div class="single"></div>
-          <div class="multiple"></div>
+          <div class="inside"></div>
         </div>
       `);
 
-      const single = { single: 'argument' };
-      const multiple = [{ multiple: 'arguments' }, 2];
+      const singleArg = { single: 'argument' };
+      const multipleArgs = [{ multiple: 'arguments' }, 2];
 
-      const singleEvent = sinon.spy();
-      const multipleEvent = sinon.spy();
+      const eventSpy = sinon.spy();
 
       application.component('.element-events-event-data', {
-        'click on .single': function handleEvent(e, ...args) {
-          singleEvent(...args);
-        },
+        'single on .inside': eventSpy,
+        'multiple on .inside': eventSpy,
+      }).vitalize();
 
-        'click on .multiple': function handleEvent(e, ...args) {
-          multipleEvent(...args);
-        },
-      });
+      expect(eventSpy.callCount).toEqual(0);
 
-      application.vitalize();
+      $('.element-events-event-data .inside').trigger('single', singleArg);
 
-      expect(singleEvent.callCount).toEqual(0);
-      expect(multipleEvent.callCount).toEqual(0);
+      expect(eventSpy.callCount).toEqual(1);
+      expect(eventSpy.getCall(0).args.slice(1)).toEqual([singleArg]);
 
-      $('.element-events-event-data .single').trigger('click', single);
+      $('.element-events-event-data .inside').trigger('multiple', multipleArgs);
 
-      expect(singleEvent.calledWith(single)).toBe(true);
-
-      $('.element-events-event-data .multiple').trigger('click', multiple);
-
-      expect(multipleEvent.calledWith(...multiple)).toBe(true);
+      expect(eventSpy.callCount).toEqual(2);
+      expect(eventSpy.getCall(1).args.slice(1)).toEqual(multipleArgs);
     });
   });
 });
