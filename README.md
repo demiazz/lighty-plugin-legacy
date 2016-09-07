@@ -13,7 +13,13 @@
     <img src="https://img.shields.io/npm/l/lighty-plugin-legacy.svg?style=flat-square&maxAge=2592000"
          alt="license">
   </a>
+  <a href="https://coveralls.io/github/demiazz/lighty-plugin-legacy">
+    <img src="https://img.shields.io/coveralls/demiazz/lighty-plugin-legacy.svg?style=flat-square&maxAge=2592000"
+         alt="coverage">
+  </a>
 </p>
+
+[![Coveralls](https://img.shields.io/coveralls/jekyll/jekyll.svg?maxAge=2592000?style=flat-square)]()
 
 Plugin for compatibility with [Evil Blocks] by [@ai].
 
