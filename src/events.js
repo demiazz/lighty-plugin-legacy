@@ -3,16 +3,16 @@ import $ from 'jquery';
 import { startsWith, endsWith, includes } from './utils';
 
 
-function addBlockEventListener(component, descriptor) {
-  const events = descriptor.substr(3);
-  const listener = component[descriptor];
+function addBlockEventListener(component, property) {
+  const events = property.substr(3);
+  const listener = component[property];
 
-  component.block.on(events, function handleBlockEvent(e) {
+  component.block.on(events, function handleBlockEvent(e, ...data) {
     if (e.currentTarget !== e.target) {
       return;
     }
 
-    listener.apply(component, arguments); // eslint-disable-line
+    listener.call(component, e, ...data);
   });
 }
 
@@ -22,8 +22,8 @@ $(window).on('load', e => {
   loaded = e;
 });
 
-function addLoadEventListener(component, descriptor) {
-  const listener = component[descriptor];
+function addLoadEventListener(component, property) {
+  const listener = component[property];
 
   if (!listener) {
     return;
@@ -40,56 +40,56 @@ function addLoadEventListener(component, descriptor) {
   }
 }
 
-function addBodyEventListener(component, descriptor) {
-  const events = descriptor.split(' on ')[0];
-  const listener = component[descriptor];
+function addBodyEventListener(component, property) {
+  const events = property.split(' on ')[0];
+  const listener = component[property];
 
-  $('body').on(events, function handleBodyEvent() {
-    listener.apply(component, arguments); // eslint-disable-line
+  $('body').on(events, function handleBodyEvent(...args) {
+    listener.call(component, ...args);
   });
 }
 
-function addWindowEventListener(component, descriptor) {
-  const events = descriptor.split(' on ')[0];
-  const listener = component[descriptor];
+function addWindowEventListener(component, property) {
+  const events = property.split(' on ')[0];
+  const listener = component[property];
 
-  $(window).on(events, function handleWindowEvent() {
-    listener.apply(component, arguments); // eslint-disable-line
+  $(window).on(events, function handleWindowEvent(...args) {
+    listener.call(component, ...args);
   });
 }
 
-function addElementEventListener(component, descriptor) {
-  const [events, selectors] = descriptor.split(' on ');
+function addElementEventListener(component, property) {
+  const [events, selectors] = property.split(' on ');
 
   if (!(events && selectors)) {
     return;
   }
 
-  const listener = component[descriptor];
+  const listener = component[property];
 
-  component.block.on(events, selectors, function handleEvent() {
-    listener.apply(component, arguments); // eslint-disable-line
+  component.block.on(events, selectors, function handleEvent(...args) {
+    listener.call(component, ...args);
   });
 }
 
-function getEventListener(descriptor) {
-  if (startsWith(descriptor, 'on ')) {
+function getEventListener(property) {
+  if (startsWith(property, 'on ')) {
     return addBlockEventListener;
   }
 
-  if (descriptor === 'load on window') {
+  if (property === 'load on window') {
     return addLoadEventListener;
   }
 
-  if (endsWith(descriptor, ' on body')) {
+  if (endsWith(property, ' on body')) {
     return addBodyEventListener;
   }
 
-  if (endsWith(descriptor, ' on window')) {
+  if (endsWith(property, ' on window')) {
     return addWindowEventListener;
   }
 
-  if (includes(descriptor, ' on ')) {
+  if (includes(property, ' on ')) {
     return addElementEventListener;
   }
 
@@ -97,17 +97,17 @@ function getEventListener(descriptor) {
 }
 
 
-export default function addEventListeners(component) {
-  const descriptors = Object.keys(component);
+export default function transform(component) {
+  const properties = Object.keys(component);
 
-  for (let i = 0; i < descriptors.length; i++) {
-    const descriptor = descriptors[i];
-    const addEventListener = getEventListener(descriptor);
+  for (let i = 0; i < properties.length; i++) {
+    const property = properties[i];
+    const addEventListener = getEventListener(property);
 
     if (addEventListener) {
-      addEventListener(component, descriptor);
+      addEventListener(component, property);
 
-      delete component[descriptor];
+      delete component[property];
     }
   }
 }

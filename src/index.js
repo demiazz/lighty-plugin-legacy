@@ -1,15 +1,20 @@
+import $ from 'jquery';
 import { plugin } from 'lighty';
 
-import './roles';
-
-import addAliases from './aliases';
-import addEventListeners from './events';
+import roles from './roles';
+import events from './events';
 
 
 function pluginInitializer() {
   return function transform(component, node) {
-    addAliases(component, node);
-    addEventListeners(component);
+    component.block = $(node);
+
+    component.$ = function findInBlock(selector) {
+      return $(selector, component.block);
+    };
+
+    roles(component);
+    events(component);
   };
 }
 
