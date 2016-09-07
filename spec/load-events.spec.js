@@ -57,7 +57,7 @@ describe('lighty-plugin-legacy', () => {
         expect(eventSpy.calledOn(component)).toBe(true);
 
         done();
-      });
+      }, 10);
     });
 
     it('passes an event to a handler', done => {
@@ -76,7 +76,7 @@ describe('lighty-plugin-legacy', () => {
         expect(eventSpy.getCall(0).args[0] instanceof $.Event).toBe(true);
 
         done();
-      });
+      }, 10);
     });
   });
 });
