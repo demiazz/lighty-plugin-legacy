@@ -27,14 +27,14 @@ module.exports = function karma(config) {
     sl_chrome_51: {
       base: 'SauceLabs',
       browserName: 'chrome',
-      version: '51.0',
+      version: '52.0',
       platform: 'Windows 10',
     },
 
     sl_chrome_50: {
       base: 'SauceLabs',
       browserName: 'chrome',
-      version: '50.0',
+      version: '51.0',
       platform: 'Windows 10',
     },
 
@@ -43,14 +43,14 @@ module.exports = function karma(config) {
     sl_firefox_47: {
       base: 'SauceLabs',
       browserName: 'firefox',
-      version: '47.0',
+      version: '48.0',
       platform: 'Windows 10',
     },
 
     sl_firefox_46: {
       base: 'SauceLabs',
       browserName: 'firefox',
-      version: '46.0',
+      version: '47.0',
       platform: 'Windows 10',
     },
 
@@ -132,7 +132,7 @@ module.exports = function karma(config) {
       tunnelIdentifier: getTunnel(),
       recordVideo: false,
       recordScreenshots: false,
-      startConnect: true,
+      startConnect: false,
     },
 
     customLaunchers: sauceBrowsers,
