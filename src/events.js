@@ -34,7 +34,7 @@ function addLoadEventListener(component, property) {
       listener.call(component, loaded);
     }, 1);
   } else {
-    $(window).load(function handleLoadEvent(e) {
+    $(window).on('load', function handleLoadEvent(e) {
       listener.call(component, e);
     });
   }
