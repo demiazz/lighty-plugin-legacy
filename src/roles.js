@@ -10,8 +10,7 @@ function rewriteSelector(context, name, position) {
     return;
   }
 
-  // eslint-disable-next-line
-  context[name] = function (...args) {
+  context[name] = function replaceAliases(...args) {
     args[position] = args[position].replace(
       /@@([\w\u00c0-\uFFFF\-]+)/g, '[data-block~="$1"]');
     args[position] = args[position].replace(
