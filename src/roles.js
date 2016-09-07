@@ -12,10 +12,8 @@ function rewriteSelector(context, name, position) {
 
   // eslint-disable-next-line
   context[name] = function (...args) {
-    // eslint-disable-next-line
     args[position] = args[position].replace(
       /@@([\w\u00c0-\uFFFF\-]+)/g, '[data-block~="$1"]');
-    // eslint-disable-next-line
     args[position] = args[position].replace(
       /@([\w\u00c0-\uFFFF\-]+)/g, '[data-role~="$1"]');
 

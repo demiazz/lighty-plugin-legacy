@@ -1,5 +1,3 @@
-/* eslint no-param-reassign: 0, no-continue: 0, prefer-arrow-callback: 0 */
-
 import $ from 'jquery';
 
 import { startsWith, endsWith, includes } from './utils';
