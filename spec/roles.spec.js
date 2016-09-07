@@ -10,9 +10,9 @@ describe('jquery', () => {
 
   it('adds `@<role>` alias for `[data-role=<role>]` selector', () => {
     fixture(`
-      <b data-role="roleTest" />
-      <b data-role="multi one" />
-      <b data-role="multi" />
+      <div class="inside" data-role="roleTest"></div>
+      <div class="inside" data-role="multi one"></div>
+      <div class="inside" data-role="multi"></div>
     `);
 
     expect($('@roleTest').length).toEqual(1);
@@ -21,9 +21,9 @@ describe('jquery', () => {
 
   it('adds `@@<block>` alias for `[data-block=<block>]` selector', () => {
     fixture(`
-      <b data-block="blockTest" />
-      <b data-block="multi one" />
-      <b data-block="multi" />
+      <div data-block="blockTest"></div>
+      <div data-block="multi one"></div>
+      <div data-block="multi"></div>
     `);
 
     expect($('@@blockTest').length).toEqual(1);
