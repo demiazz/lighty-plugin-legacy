@@ -19,8 +19,6 @@
   </a>
 </p>
 
-[![Coveralls](https://img.shields.io/coveralls/jekyll/jekyll.svg?maxAge=2592000?style=flat-square)]()
-
 Plugin for compatibility with [Evil Blocks] by [@ai].
 
 <a href="https://evilmartians.com/?utm_source=evil-blocks">
