@@ -1,3 +1,4 @@
+const path = require('path');
 const istanbul = require('rollup-plugin-istanbul');
 
 const baseConfig = require('./karma.base');
@@ -141,10 +142,10 @@ module.exports = function karma(config) {
 
     browsers: Object.keys(sauceBrowsers),
 
-    reporters: ['dots', 'saucelabs', 'coverage', 'coveralls'],
+    reporters: ['dots', 'coverage', 'coveralls', 'saucelabs'],
 
     coverageReporter: {
-      dir: 'coverage/',
+      dir: path.join(__dirname, '../', 'coverage'),
       reporters: [
         { type: 'text' },
         { type: 'lcov' },
