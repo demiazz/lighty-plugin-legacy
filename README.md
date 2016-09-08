@@ -2,19 +2,19 @@
 
 <p align="center">
   <a href="https://travis-ci.org/demiazz/lighty-plugin-legacy">
-    <img src="https://img.shields.io/travis/demiazz/lighty-plugin-legacy.svg?style=flat-square&maxAge=2592000"
+    <img src="https://img.shields.io/travis/demiazz/lighty-plugin-legacy.svg?style=flat-square"
          alt="build status">
   </a>
   <a href="https://www.npmjs.com/package/lighty-plugin-legacy">
-    <img src="https://img.shields.io/npm/v/lighty-plugin-legacy.svg?style=flat-square&maxAge=2592000"
+    <img src="https://img.shields.io/npm/v/lighty-plugin-legacy.svg?style=flat-square"
          alt="npm version">
   </a>
   <a href="https://github.com/demiazz/lighty-plugin-legacy/blob/master/LICENSE">
-    <img src="https://img.shields.io/npm/l/lighty-plugin-legacy.svg?style=flat-square&maxAge=2592000"
+    <img src="https://img.shields.io/npm/l/lighty-plugin-legacy.svg?style=flat-square"
          alt="license">
   </a>
   <a href="https://coveralls.io/github/demiazz/lighty-plugin-legacy">
-    <img src="https://img.shields.io/coveralls/demiazz/lighty-plugin-legacy.svg?style=flat-square&maxAge=2592000"
+    <img src="https://img.shields.io/coveralls/demiazz/lighty-plugin-legacy.svg?style=flat-square"
          alt="coverage">
   </a>
 </p>
