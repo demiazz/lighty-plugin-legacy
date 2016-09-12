@@ -32,9 +32,7 @@ describe('lighty-plugin-legacy', () => {
 
           done();
         },
-      });
-
-      application.vitalize();
+      }).vitalize();
     });
   });
 });
