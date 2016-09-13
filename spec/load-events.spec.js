@@ -21,9 +21,7 @@ describe('lighty-plugin-legacy', () => {
 
       application.component('.load-events', {
         'load on window': eventSpy,
-      });
-
-      application.vitalize();
+      }).vitalize();
 
       expect(eventSpy.callCount).toEqual(0);
 
