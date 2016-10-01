@@ -14,7 +14,7 @@ describe('lighty-plugin-legacy', () => {
   afterEach(clear);
 
   describe('block alias', () => {
-    it('adds `this.block` alias for `$(node)`', done => {
+    it('adds `this.block` alias for `$(node)`', (done) => {
       fixture('<div class="bind"></div>');
 
       application.component('.bind', {

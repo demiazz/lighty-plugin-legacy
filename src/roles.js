@@ -31,11 +31,11 @@ rewriteSelector($.find, 'matches', 0);
 export default function transform(component) {
   const nodes = component.$('[data-role]');
 
-  for (let i = 0; i < nodes.length; i++) {
+  for (let i = 0; i < nodes.length; i += 1) {
     const node = nodes[i];
     const roles = node.attributes['data-role'].value.split(' ');
 
-    for (let j = 0; j < roles.length; j++) {
+    for (let j = 0; j < roles.length; j += 1) {
       const role = roles[j];
 
       if (!component[role]) {

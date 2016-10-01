@@ -18,7 +18,7 @@ function addBlockEventListener(component, property) {
 
 let loaded;
 
-$(window).on('load', e => {
+$(window).on('load', (e) => {
   loaded = e;
 });
 
@@ -100,7 +100,7 @@ function getEventListener(property) {
 export default function transform(component) {
   const properties = Object.keys(component);
 
-  for (let i = 0; i < properties.length; i++) {
+  for (let i = 0; i < properties.length; i += 1) {
     const property = properties[i];
     const addEventListener = getEventListener(property);
 

@@ -14,7 +14,7 @@ describe('lighty-plugin-legacy', () => {
   afterEach(clear);
 
   describe('load events', () => {
-    it('adds support for `load on window` pattern', done => {
+    it('adds support for `load on window` pattern', (done) => {
       fixture('<div class="load-events"></div>');
 
       const eventSpy = sinon.spy();
@@ -32,7 +32,7 @@ describe('lighty-plugin-legacy', () => {
       }, 10);
     });
 
-    it('calls handler on a component instance', done => {
+    it('calls handler on a component instance', (done) => {
       fixture('<div class="load-events-context"></div>');
 
       const eventSpy = sinon.spy();
@@ -58,7 +58,7 @@ describe('lighty-plugin-legacy', () => {
       }, 10);
     });
 
-    it('passes an event to a handler', done => {
+    it('passes an event to a handler', (done) => {
       fixture('<div class="load-events-event"></div>');
 
       const eventSpy = sinon.spy();

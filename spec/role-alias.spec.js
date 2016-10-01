@@ -13,7 +13,7 @@ describe('lighty-plugin-legacy', () => {
   afterEach(clear);
 
   describe('role aliases', () => {
-    it('adds `.<role>` property for each `[data-role=<role>]` element', done => {
+    it('adds `.<role>` property for each `[data-role=<role>]` element', (done) => {
       fixture(`
         <div data-role="single"></div>
         <div data-role="multi"></div>
@@ -60,7 +60,7 @@ describe('lighty-plugin-legacy', () => {
       application.vitalize();
     });
 
-    it("doesn't override existing properties", done => {
+    it("doesn't override existing properties", (done) => {
       fixture(`
         <div class="role-no-bind">
           <div data-role="exists" />

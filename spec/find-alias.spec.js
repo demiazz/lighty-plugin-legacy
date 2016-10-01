@@ -14,7 +14,7 @@ describe('lighty-plugin-legacy', () => {
   afterEach(clear);
 
   describe('find alias', () => {
-    it('adds `this.$(<selector>)` alias for `this.block.find(<selector>)`', done => {
+    it('adds `this.$(<selector>)` alias for `this.block.find(<selector>)`', (done) => {
       fixture(`
         <div class="outside element">
         <div class="find">
