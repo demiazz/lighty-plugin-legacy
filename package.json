@@ -32,7 +32,7 @@
     "build:umd": "$(npm bin)/cross-env TARGET=umd $(npm bin)/rollup --config build/rollup.config.js",
     "build:umd:min": "$(npm bin)/cross-env TARGET=umd NODE_ENV=production $(npm bin)/rollup --config build/rollup.config.js",
     "build": "npm run build:commonjs && npm run build:es && npm run build:umd && npm run build:umd:min",
-    "prepublish": "npm run lint && npm run test && npm run build"
+    "version": "npm run build && git add -A dist"
   },
   "dependencies": {
     "lighty": "^0.2.0",
@@ -56,6 +56,7 @@
     "karma-sauce-launcher": "^1.0.0",
     "karma-sinon": "^1.0.5",
     "karma-spec-reporter": "0.0.26",
+    "np": "^2.9.0",
     "phantomjs-prebuilt": "^2.1.12",
     "rollup": "^0.36.1",
     "rollup-plugin-buble": "^0.14.0",
