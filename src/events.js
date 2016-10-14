@@ -98,16 +98,15 @@ function getEventListener(property) {
 
 
 export default function transform(component) {
-  const properties = Object.keys(component);
-
-  for (let i = 0; i < properties.length; i += 1) {
-    const property = properties[i];
+  Object.keys(component).forEach((property) => {
     const addEventListener = getEventListener(property);
 
-    if (addEventListener) {
-      addEventListener(component, property);
-
-      delete component[property];
+    if (!addEventListener) {
+      return;
     }
-  }
+
+    addEventListener(component, property);
+
+    delete component[property];
+  });
 }
