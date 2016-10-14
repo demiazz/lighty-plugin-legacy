@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import application from 'lighty';
 
-import { fixture, clear } from './fixtures';
+import { fixture, clear, matchers } from './helpers';
 
 import plugin from '../src/index';
 
@@ -11,22 +11,26 @@ describe('lighty-plugin-legacy', () => {
     application.use(plugin).run();
   });
 
+  beforeEach(() => {
+    window.jasmine.addMatchers(matchers);
+  });
+
   afterEach(clear);
 
   describe('load events', () => {
     it('adds support for `load on window` pattern', (done) => {
       fixture('<div class="load-events"></div>');
 
-      const eventSpy = sinon.spy();
+      const eventSpy = jasmine.createSpy('event');
 
       application.component('.load-events', {
         'load on window': eventSpy,
       }).vitalize();
 
-      expect(eventSpy.callCount).toEqual(0);
+      expect(eventSpy).not.toHaveBeenCalled();
 
       setTimeout(() => {
-        expect(eventSpy.callCount).toEqual(1);
+        expect(eventSpy).toHaveBeenCalledTimes(1);
 
         done();
       }, 10);
@@ -35,7 +39,7 @@ describe('lighty-plugin-legacy', () => {
     it('calls handler on a component instance', (done) => {
       fixture('<div class="load-events-context"></div>');
 
-      const eventSpy = sinon.spy();
+      const eventSpy = jasmine.createSpy('event');
 
       let component;
 
@@ -47,12 +51,12 @@ describe('lighty-plugin-legacy', () => {
         'load on window': eventSpy,
       }).vitalize();
 
-      expect(eventSpy.callCount).toEqual(0);
+      expect(eventSpy).not.toHaveBeenCalled();
       expect(component).toBeTruthy();
 
       setTimeout(() => {
-        expect(eventSpy.callCount).toEqual(1);
-        expect(eventSpy.calledOn(component)).toBe(true);
+        expect(eventSpy).toHaveBeenCalledTimes(1);
+        expect(eventSpy).toHaveBeenCalledOn(component);
 
         done();
       }, 10);
@@ -61,17 +65,17 @@ describe('lighty-plugin-legacy', () => {
     it('passes an event to a handler', (done) => {
       fixture('<div class="load-events-event"></div>');
 
-      const eventSpy = sinon.spy();
+      const eventSpy = jasmine.createSpy('event');
 
       application.component('.load-events-event', {
         'load on window': eventSpy,
       }).vitalize();
 
-      expect(eventSpy.callCount).toEqual(0);
+      expect(eventSpy).not.toHaveBeenCalled();
 
       setTimeout(() => {
-        expect(eventSpy.callCount).toEqual(1);
-        expect(eventSpy.getCall(0).args[0] instanceof $.Event).toBe(true);
+        expect(eventSpy).toHaveBeenCalledTimes(1);
+        expect(eventSpy.calls.argsFor(0)[0]).toBeInstanceOf($.Event);
 
         done();
       }, 10);

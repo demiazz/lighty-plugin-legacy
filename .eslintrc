@@ -13,6 +13,7 @@
     }]
   },
   "globals": {
+    "jasmine": false,
     "describe": false,
     "context": false,
     "beforeAll": false,

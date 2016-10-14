@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import application from 'lighty';
 
-import { fixture, clear } from './fixtures';
+import { fixture, clear, matchers } from './helpers';
 
 import plugin from '../src/index';
 
@@ -11,48 +11,52 @@ describe('lighty-plugin-legacy', () => {
     application.use(plugin).run();
   });
 
+  beforeEach(() => {
+    window.jasmine.addMatchers(matchers);
+  });
+
   afterEach(clear);
 
   describe('block events', () => {
     it('adds support for `on <event>` pattern`', () => {
       fixture('<div class="block-events"></div>');
 
-      const eventSpy = sinon.spy();
+      const eventSpy = jasmine.createSpy('event');
 
       application.component('.block-events', {
         'on click': eventSpy,
         'on custom-event': eventSpy,
       }).vitalize();
 
-      expect(eventSpy.callCount).toEqual(0);
+      expect(eventSpy).not.toHaveBeenCalled();
 
       $('.block-events').trigger('click');
 
-      expect(eventSpy.callCount).toEqual(1);
+      expect(eventSpy).toHaveBeenCalledTimes(1);
 
       $('.block-events').trigger('custom-event');
 
-      expect(eventSpy.callCount).toEqual(2);
+      expect(eventSpy).toHaveBeenCalledTimes(2);
     });
 
     it('adds support for `on <event>[ <event> ...]` pattern`', () => {
       fixture('<div class="multiple-block-events"></div>');
 
-      const eventSpy = sinon.spy();
+      const eventSpy = jasmine.createSpy('event');
 
       application.component('.multiple-block-events', {
         'on click custom-event': eventSpy,
       }).vitalize();
 
-      expect(eventSpy.callCount).toEqual(0);
+      expect(eventSpy).not.toHaveBeenCalled();
 
       $('.multiple-block-events').trigger('click');
 
-      expect(eventSpy.callCount).toEqual(1);
+      expect(eventSpy).toHaveBeenCalledTimes(1);
 
       $('.multiple-block-events').trigger('custom-event');
 
-      expect(eventSpy.callCount).toEqual(2);
+      expect(eventSpy).toHaveBeenCalledTimes(2);
     });
 
     it("calls handler only when a block is event's target", () => {
@@ -62,7 +66,7 @@ describe('lighty-plugin-legacy', () => {
         </div>
       `);
 
-      const eventSpy = sinon.spy();
+      const eventSpy = jasmine.createSpy('event');
 
       application.component('.only-block-events', {
         'on click': eventSpy,
@@ -70,13 +74,13 @@ describe('lighty-plugin-legacy', () => {
 
       $('@inside').trigger('click');
 
-      expect(eventSpy.callCount).toEqual(0);
+      expect(eventSpy).not.toHaveBeenCalled();
     });
 
     it('calls handler on a component instance', () => {
       fixture('<div class="block-events-context"></div>');
 
-      const eventSpy = sinon.spy();
+      const eventSpy = jasmine.createSpy('event');
 
       let component;
 
@@ -88,30 +92,30 @@ describe('lighty-plugin-legacy', () => {
         'on click': eventSpy,
       }).vitalize();
 
-      expect(eventSpy.callCount).toEqual(0);
+      expect(eventSpy).not.toHaveBeenCalled();
       expect(component).toBeTruthy();
 
       $('.block-events-context').trigger('click');
 
-      expect(eventSpy.callCount).toEqual(1);
-      expect(eventSpy.calledOn(component)).toBe(true);
+      expect(eventSpy).toHaveBeenCalledTimes(1);
+      expect(eventSpy).toHaveBeenCalledOn(component);
     });
 
     it('passes an event to a handler', () => {
       fixture('<div class="block-events-event"></div>');
 
-      const eventSpy = sinon.spy();
+      const eventSpy = jasmine.createSpy();
 
       application.component('.block-events-event', {
         'on click': eventSpy,
       }).vitalize();
 
-      expect(eventSpy.callCount).toEqual(0);
+      expect(eventSpy).not.toHaveBeenCalled();
 
       $('.block-events-event').trigger('click');
 
-      expect(eventSpy.callCount).toEqual(1);
-      expect(eventSpy.getCall(0).args[0] instanceof $.Event).toBe(true);
+      expect(eventSpy).toHaveBeenCalledTimes(1);
+      expect(eventSpy.calls.argsFor(0)[0]).toBeInstanceOf($.Event);
     });
 
     it('passes an event data to a handler', () => {
@@ -120,24 +124,24 @@ describe('lighty-plugin-legacy', () => {
       const singleArg = { single: 'argument' };
       const multipleArgs = [{ multiple: 'arguments' }, 2];
 
-      const eventSpy = sinon.spy();
+      const eventSpy = jasmine.createSpy('event');
 
       application.component('.block-events-event-data', {
         'on single': eventSpy,
         'on multiple': eventSpy,
       }).vitalize();
 
-      expect(eventSpy.callCount).toEqual(0);
+      expect(eventSpy).not.toHaveBeenCalled();
 
       $('.block-events-event-data').trigger('single', singleArg);
 
-      expect(eventSpy.callCount).toEqual(1);
-      expect(eventSpy.getCall(0).args.slice(1)).toEqual([singleArg]);
+      expect(eventSpy).toHaveBeenCalledTimes(1);
+      expect(eventSpy.calls.argsFor(0).slice(1)).toEqual([singleArg]);
 
       $('.block-events-event-data').trigger('multiple', multipleArgs);
 
-      expect(eventSpy.callCount).toEqual(2);
-      expect(eventSpy.getCall(1).args.slice(1)).toEqual(multipleArgs);
+      expect(eventSpy).toHaveBeenCalledTimes(2);
+      expect(eventSpy.calls.argsFor(1).slice(1)).toEqual(multipleArgs);
     });
   });
 });

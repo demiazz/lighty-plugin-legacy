@@ -1,6 +1,6 @@
 import application from 'lighty';
 
-import { fixture, clear } from './fixtures';
+import { fixture, clear, matchers } from './helpers';
 
 import plugin from '../src/index';
 
@@ -8,6 +8,10 @@ import plugin from '../src/index';
 describe('lighty-plugin-legacy', () => {
   beforeAll(() => {
     application.use(plugin).run();
+  });
+
+  beforeEach(() => {
+    window.jasmine.addMatchers(matchers);
   });
 
   afterEach(clear);
@@ -37,19 +41,19 @@ describe('lighty-plugin-legacy', () => {
 
       application.component('.role', {
         init() {
-          expect(this.single.length).toEqual(2);
+          expect(this.single).toHaveLength(2);
           expect(this.single.toArray())
             .toEqual(this.$('@single').toArray());
 
-          expect(this.multi.length).toEqual(4);
+          expect(this.multi).toHaveLength(4);
           expect(this.multi.toArray())
             .toEqual(this.$('@multi').toArray());
 
-          expect(this.customRole.length).toEqual(2);
+          expect(this.customRole).toHaveLength(2);
           expect(this.customRole.toArray())
             .toEqual(this.$('@customRole').toArray());
 
-          expect(this['yet-another-role'].length).toEqual(2);
+          expect(this['yet-another-role']).toHaveLength(2);
           expect(this['yet-another-role'].toArray())
             .toEqual(this.$('@yet-another-role').toArray());
 

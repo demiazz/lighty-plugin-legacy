@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import application from 'lighty';
 
-import { fixture, clear } from './fixtures';
+import { fixture, clear, matchers } from './helpers';
 
 import plugin from '../src/index';
 
@@ -9,6 +9,10 @@ import plugin from '../src/index';
 describe('lighty-plugin-legacy', () => {
   beforeAll(() => {
     application.use(plugin).run();
+  });
+
+  beforeEach(() => {
+    window.jasmine.addMatchers(matchers);
   });
 
   afterEach(clear);
@@ -27,7 +31,7 @@ describe('lighty-plugin-legacy', () => {
 
       application.component('.find', {
         init() {
-          expect(this.$('.element').length).toEqual(2);
+          expect(this.$('.element')).toHaveLength(2);
           expect(this.$('.element').toArray()).toEqual($('.inside').toArray());
 
           done();

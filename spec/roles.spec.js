@@ -1,11 +1,15 @@
 import $ from 'jquery';
 
-import { fixture, clear } from './fixtures';
+import { fixture, clear, matchers } from './helpers';
 
 import '../src/roles';
 
 
 describe('jquery', () => {
+  beforeEach(() => {
+    window.jasmine.addMatchers(matchers);
+  });
+
   afterEach(clear);
 
   it('adds `@<role>` alias for `[data-role=<role>]` selector', () => {
@@ -15,8 +19,8 @@ describe('jquery', () => {
       <div class="inside" data-role="multi"></div>
     `);
 
-    expect($('@roleTest').length).toEqual(1);
-    expect($('@multi').length).toEqual(2);
+    expect($('@roleTest')).toHaveLength(1);
+    expect($('@multi')).toHaveLength(2);
   });
 
   it('adds `@@<block>` alias for `[data-block=<block>]` selector', () => {
@@ -26,7 +30,7 @@ describe('jquery', () => {
       <div data-block="multi"></div>
     `);
 
-    expect($('@@blockTest').length).toEqual(1);
-    expect($('@@multi').length).toEqual(2);
+    expect($('@@blockTest')).toHaveLength(1);
+    expect($('@@multi')).toHaveLength(2);
   });
 });

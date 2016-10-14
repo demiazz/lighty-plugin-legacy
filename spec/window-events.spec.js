@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import application from 'lighty';
 
-import { fixture, clear } from './fixtures';
+import { fixture, clear, matchers } from './helpers';
 
 import plugin from '../src/index';
 
@@ -11,54 +11,58 @@ describe('lighty-plugin-legacy', () => {
     application.use(plugin).run();
   });
 
+  beforeEach(() => {
+    window.jasmine.addMatchers(matchers);
+  });
+
   afterEach(clear);
 
   describe('window events', () => {
     it('adds support for `<event> on window` pattern', () => {
       fixture('<div class="window-events-single"></div>');
 
-      const eventSpy = sinon.spy();
+      const eventSpy = jasmine.createSpy('event');
 
       application.component('.window-events-single', {
         'click on window': eventSpy,
         'custom-event on window': eventSpy,
       }).vitalize();
 
-      expect(eventSpy.callCount).toEqual(0);
+      expect(eventSpy).not.toHaveBeenCalled();
 
       $(window).trigger('click');
 
-      expect(eventSpy.callCount).toEqual(1);
+      expect(eventSpy).toHaveBeenCalledTimes(1);
 
       $(window).trigger('custom-event');
 
-      expect(eventSpy.callCount).toEqual(2);
+      expect(eventSpy).toHaveBeenCalledTimes(2);
     });
 
     it('adds support for `<event>[ <event> ...] on window` pattern', () => {
       fixture('<div class="window-events-multiple"></div>');
 
-      const eventSpy = sinon.spy();
+      const eventSpy = jasmine.createSpy('event');
 
       application.component('.window-events-multiple', {
         'click custom-event on window': eventSpy,
       }).vitalize();
 
-      expect(eventSpy.callCount).toEqual(0);
+      expect(eventSpy).not.toHaveBeenCalled();
 
       $(window).trigger('click');
 
-      expect(eventSpy.callCount).toEqual(1);
+      expect(eventSpy).toHaveBeenCalledTimes(1);
 
       $(window).trigger('custom-event');
 
-      expect(eventSpy.callCount).toEqual(2);
+      expect(eventSpy).toHaveBeenCalledTimes(2);
     });
 
     it('calls handler on a component instance', () => {
       fixture('<div class="window-events-context"></div>');
 
-      const eventSpy = sinon.spy();
+      const eventSpy = jasmine.createSpy('event');
 
       let component;
 
@@ -70,30 +74,30 @@ describe('lighty-plugin-legacy', () => {
         'click on window': eventSpy,
       }).vitalize();
 
-      expect(eventSpy.callCount).toEqual(0);
+      expect(eventSpy).not.toHaveBeenCalled();
       expect(component).toBeTruthy();
 
       $(window).trigger('click');
 
-      expect(eventSpy.callCount).toEqual(1);
-      expect(eventSpy.calledOn(component)).toBe(true);
+      expect(eventSpy).toHaveBeenCalledTimes(1);
+      expect(eventSpy).toHaveBeenCalledOn(component);
     });
 
     it('passes an event to a handler', () => {
       fixture('<div class="window-events-event"></div>');
 
-      const eventSpy = sinon.spy();
+      const eventSpy = jasmine.createSpy('event');
 
       application.component('.window-events-event', {
         'click on window': eventSpy,
       }).vitalize();
 
-      expect(eventSpy.callCount).toEqual(0);
+      expect(eventSpy).not.toHaveBeenCalled();
 
       $(window).trigger('click');
 
-      expect(eventSpy.callCount).toEqual(1);
-      expect(eventSpy.getCall(0).args[0] instanceof $.Event).toBe(true);
+      expect(eventSpy).toHaveBeenCalledTimes(1);
+      expect(eventSpy.calls.argsFor(0)[0]).toBeInstanceOf($.Event);
     });
 
     it('passes an event data to a handler', () => {
@@ -102,24 +106,24 @@ describe('lighty-plugin-legacy', () => {
       const singleArg = { single: 'argument' };
       const multipleArgs = [{ multiple: 'arguments' }, 2];
 
-      const eventSpy = sinon.spy();
+      const eventSpy = jasmine.createSpy('event');
 
       application.component('.block-events-event-data', {
         'single on window': eventSpy,
         'multiple on window': eventSpy,
       }).vitalize();
 
-      expect(eventSpy.callCount).toEqual(0);
+      expect(eventSpy).not.toHaveBeenCalled();
 
       $(window).trigger('single', singleArg);
 
-      expect(eventSpy.callCount).toEqual(1);
-      expect(eventSpy.getCall(0).args.slice(1)).toEqual([singleArg]);
+      expect(eventSpy).toHaveBeenCalledTimes(1);
+      expect(eventSpy.calls.argsFor(0).slice(1)).toEqual([singleArg]);
 
       $(window).trigger('multiple', multipleArgs);
 
-      expect(eventSpy.callCount).toEqual(2);
-      expect(eventSpy.getCall(1).args.slice(1)).toEqual(multipleArgs);
+      expect(eventSpy).toHaveBeenCalledTimes(2);
+      expect(eventSpy.calls.argsFor(1).slice(1)).toEqual(multipleArgs);
     });
   });
 });
