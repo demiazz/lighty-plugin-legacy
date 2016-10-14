@@ -36,7 +36,7 @@ function toHaveLength() {
       if (actual.length == null) {
         return {
           pass: false,
-          message: `Expected object have not length property`,
+          message: 'Expected object have not length property',
         };
       }
 
