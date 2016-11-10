@@ -12,9 +12,9 @@ function rewriteSelector(context, name, position) {
 
   context[name] = function replaceAliases(...args) {
     args[position] = args[position].replace(
-      /@@([\w\u00c0-\uFFFF\-]+)/g, '[data-block~="$1"]');
+      /@@([\w\u00c0-\uFFFF-]+)/g, '[data-block~="$1"]');
     args[position] = args[position].replace(
-      /@([\w\u00c0-\uFFFF\-]+)/g, '[data-role~="$1"]');
+      /@([\w\u00c0-\uFFFF-]+)/g, '[data-role~="$1"]');
 
     return original.apply(context, args);
   };
