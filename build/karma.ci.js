@@ -27,6 +27,13 @@ module.exports = function karma(config) {
   const sauceBrowsers = {
     // Chrome (last 2 versions)
 
+    sl_chrome_54: {
+      base: 'SauceLabs',
+      browserName: 'chrome',
+      version: '54.0',
+      platform: 'Windows 10',
+    },
+
     sl_chrome_53: {
       base: 'SauceLabs',
       browserName: 'chrome',
@@ -34,26 +41,19 @@ module.exports = function karma(config) {
       platform: 'Windows 10',
     },
 
-    sl_chrome_52: {
+    // Firefox (last 2 versions)
+
+    sl_firefox_49: {
       base: 'SauceLabs',
-      browserName: 'chrome',
-      version: '52.0',
+      browserName: 'firefox',
+      version: '49.0',
       platform: 'Windows 10',
     },
-
-    // Firefox (last 2 versions)
 
     sl_firefox_48: {
       base: 'SauceLabs',
       browserName: 'firefox',
       version: '48.0',
-      platform: 'Windows 10',
-    },
-
-    sl_firefox_47: {
-      base: 'SauceLabs',
-      browserName: 'firefox',
-      version: '47.0',
       platform: 'Windows 10',
     },
 
