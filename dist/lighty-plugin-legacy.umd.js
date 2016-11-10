@@ -1,21 +1,27 @@
 /*!
- * lighty-plugin-legacy v0.1.0
+ * lighty-plugin-legacy v0.2.0
  * https://github.com/demiazz/lighty-plugin-legacy
  *
  * Copyright Alexey Plutalov
  * Released under the MIT license
  */
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('jquery'), require('lighty')) :
-  typeof define === 'function' && define.amd ? define(['jquery', 'lighty'], factory) :
-  (global.lightyPluginLegacy = factory(global.jQuery,global.lighty));
-}(this, (function ($,lighty) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('jquery'), require('lighty')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'jquery', 'lighty'], factory) :
+  (factory((global.lightyPluginLegacy = global.lightyPluginLegacy || {}),global.jQuery,global.lighty));
+}(this, (function (exports,$,lighty) { 'use strict';
 
 $ = 'default' in $ ? $['default'] : $;
 
 /*
- * Copy from jquery.role by Sasha Koss https://github.com/kossnocorp/role
+ * Regexps from jquery.role by Sasha Koss https://github.com/kossnocorp/role
  */
+function transformSelector(selector) {
+  return selector
+    .replace(/@@([\w\u00c0-\uFFFF-]+)/g, '[data-block~="$1"]')
+    .replace(/@([\w\u00c0-\uFFFF-]+)/g, '[data-role~="$1"]');
+}
+
 function rewriteSelector(context, name, position) {
   var original = context[name];
 
@@ -27,10 +33,7 @@ function rewriteSelector(context, name, position) {
     var args = [], len = arguments.length;
     while ( len-- ) args[ len ] = arguments[ len ];
 
-    args[position] = args[position].replace(
-      /@@([\w\u00c0-\uFFFF\-]+)/g, '[data-block~="$1"]');
-    args[position] = args[position].replace(
-      /@([\w\u00c0-\uFFFF\-]+)/g, '[data-role~="$1"]');
+    args[position] = transformSelector(args[position]);
 
     return original.apply(context, args);
   };
@@ -225,6 +228,15 @@ function transform$2(component) {
   });
 }
 
+function querySelector$1(tree, selector) {
+  if ( tree === void 0 ) tree = document.body;
+
+  return lighty.querySelector(
+    typeof tree === 'string' ? transformSelector(tree) : tree,
+    transformSelector(selector)
+  );
+}
+
 function pluginInitializer() {
   return function transform(component, node) {
     component.block = $(node);
@@ -241,7 +253,10 @@ function pluginInitializer() {
 
 var index = lighty.plugin('legacy', pluginInitializer);
 
-return index;
+exports.querySelector = querySelector$1;
+exports['default'] = index;
+
+Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 //# sourceMappingURL=lighty-plugin-legacy.umd.js.map

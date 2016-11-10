@@ -1,13 +1,21 @@
 'use strict';
 
+Object.defineProperty(exports, '__esModule', { value: true });
+
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var $ = _interopDefault(require('jquery'));
 var lighty = require('lighty');
 
 /*
- * Copy from jquery.role by Sasha Koss https://github.com/kossnocorp/role
+ * Regexps from jquery.role by Sasha Koss https://github.com/kossnocorp/role
  */
+function transformSelector(selector) {
+  return selector
+    .replace(/@@([\w\u00c0-\uFFFF-]+)/g, '[data-block~="$1"]')
+    .replace(/@([\w\u00c0-\uFFFF-]+)/g, '[data-role~="$1"]');
+}
+
 function rewriteSelector(context, name, position) {
   var original = context[name];
 
@@ -19,10 +27,7 @@ function rewriteSelector(context, name, position) {
     var args = [], len = arguments.length;
     while ( len-- ) args[ len ] = arguments[ len ];
 
-    args[position] = args[position].replace(
-      /@@([\w\u00c0-\uFFFF\-]+)/g, '[data-block~="$1"]');
-    args[position] = args[position].replace(
-      /@([\w\u00c0-\uFFFF\-]+)/g, '[data-role~="$1"]');
+    args[position] = transformSelector(args[position]);
 
     return original.apply(context, args);
   };
@@ -217,6 +222,15 @@ function transform$2(component) {
   });
 }
 
+function querySelector$1(tree, selector) {
+  if ( tree === void 0 ) tree = document.body;
+
+  return lighty.querySelector(
+    typeof tree === 'string' ? transformSelector(tree) : tree,
+    transformSelector(selector)
+  );
+}
+
 function pluginInitializer() {
   return function transform(component, node) {
     component.block = $(node);
@@ -233,5 +247,6 @@ function pluginInitializer() {
 
 var index = lighty.plugin('legacy', pluginInitializer);
 
-module.exports = index;
+exports.querySelector = querySelector$1;
+exports['default'] = index;
 //# sourceMappingURL=lighty-plugin-legacy.js.map
