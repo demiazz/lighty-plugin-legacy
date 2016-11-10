@@ -1,4 +1,4 @@
-import application from 'lighty';
+import { create } from 'lighty';
 
 import { fixture, clear, matchers } from './helpers';
 
@@ -6,8 +6,10 @@ import plugin from '../src/index';
 
 
 describe('lighty-plugin-legacy', () => {
+  let application;
+
   beforeAll(() => {
-    application.use(plugin).run();
+    application = create({ plugins: [plugin] });
   });
 
   beforeEach(() => {
