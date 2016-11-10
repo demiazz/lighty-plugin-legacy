@@ -1,8 +1,8 @@
 import $ from 'jquery';
 
-/*
- * Copy from jquery.role by Sasha Koss https://github.com/kossnocorp/role
- */
+import transformSelector from './transform-selector';
+
+
 function rewriteSelector(context, name, position) {
   const original = context[name];
 
@@ -11,10 +11,7 @@ function rewriteSelector(context, name, position) {
   }
 
   context[name] = function replaceAliases(...args) {
-    args[position] = args[position].replace(
-      /@@([\w\u00c0-\uFFFF-]+)/g, '[data-block~="$1"]');
-    args[position] = args[position].replace(
-      /@([\w\u00c0-\uFFFF-]+)/g, '[data-role~="$1"]');
+    args[position] = transformSelector(args[position]);
 
     return original.apply(context, args);
   };
