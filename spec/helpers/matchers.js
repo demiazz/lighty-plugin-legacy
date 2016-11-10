@@ -69,10 +69,41 @@ function toHaveBeenCalledOn() {
   };
 }
 
+function toHaveCSSClass() {
+  return {
+    compare(actual, klass) {
+      let nodes;
+
+      if (actual instanceof HTMLElement) {
+        nodes = [actual];
+      } else if (actual instanceof NodeList) {
+        nodes = [].slice.call(actual);
+      } else if (typeof actual === 'string') {
+        nodes = [].slice.call(document.querySelectorAll(actual));
+      } else {
+        return {
+          pass: false,
+          message: 'Expected HTMLElement, NodeList or selector',
+        };
+      }
+
+      const pass = nodes.every(node => (
+        node.className.split(' ').indexOf(klass) !== -1
+      ));
+      const message = pass
+        ? `Expected node(s) to haven't \`.${klass}\` CSS class`
+        : `Expected node(s) to have \`.${klass}\` CSS class`;
+
+      return { pass, message };
+    },
+  };
+}
+
 
 export default {
   toBeTrue,
   toBeInstanceOf,
   toHaveLength,
   toHaveBeenCalledOn,
+  toHaveCSSClass,
 };
