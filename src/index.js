@@ -3,6 +3,7 @@ import { plugin } from 'lighty';
 
 import roles from './roles';
 import events from './events';
+import querySelector from './query-selector';
 
 
 function pluginInitializer() {
@@ -18,5 +19,7 @@ function pluginInitializer() {
   };
 }
 
+
+export { querySelector };
 
 export default plugin('legacy', pluginInitializer);
