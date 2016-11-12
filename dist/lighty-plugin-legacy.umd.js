@@ -1,5 +1,5 @@
 /*!
- * lighty-plugin-legacy v0.2.0
+ * lighty-plugin-legacy v0.2.1
  * https://github.com/demiazz/lighty-plugin-legacy
  *
  * Copyright Alexey Plutalov
@@ -184,6 +184,10 @@ function addElementEventListener(component, property) {
   component.block.on(events, selectors, function handleEvent() {
     var args = [], len = arguments.length;
     while ( len-- ) args[ len ] = arguments[ len ];
+
+    var event = args[0];
+
+    event.el = $(this);
 
     listener.call.apply(listener, [ component ].concat( args ));
   });

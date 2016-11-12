@@ -173,6 +173,10 @@ function addElementEventListener(component, property) {
     var args = [], len = arguments.length;
     while ( len-- ) args[ len ] = arguments[ len ];
 
+    var event = args[0];
+
+    event.el = $(this);
+
     listener.call.apply(listener, [ component ].concat( args ));
   });
 }
