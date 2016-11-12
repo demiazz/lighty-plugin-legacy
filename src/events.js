@@ -68,6 +68,10 @@ function addElementEventListener(component, property) {
   const listener = component[property];
 
   component.block.on(events, selectors, function handleEvent(...args) {
+    const [event] = args;
+
+    event.el = $(this);
+
     listener.call(component, ...args);
   });
 }

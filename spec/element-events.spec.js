@@ -176,6 +176,34 @@ describe('lighty-plugin-legacy', () => {
       expect(eventSpy.calls.argsFor(0)[0]).toBeInstanceOf($.Event);
     });
 
+    it('binds element to an event', () => {
+      fixture(`
+        <div class="element-events-element-binding">
+          <div class="inside"></div>
+        </div>
+      `);
+
+      const eventSpy = jasmine.createSpy('event');
+
+      application.component('.element-events-element-binding', {
+        'click on .inside': eventSpy,
+      }).vitalize();
+
+      expect(eventSpy).not.toHaveBeenCalled();
+
+      $('.element-events-element-binding .inside').trigger('click');
+
+      expect(eventSpy).toHaveBeenCalledTimes(1);
+
+      const elements = eventSpy.calls.argsFor(0)[0].el;
+
+      expect(elements.jquery).toBeTruthy();
+      expect(elements).toHaveLength(1);
+      expect(elements[0]).toEqual(
+        document.querySelector('.element-events-element-binding .inside')
+      );
+    });
+
     it('passes an event data to a handler', () => {
       fixture(`
         <div class="element-events-event-data">
